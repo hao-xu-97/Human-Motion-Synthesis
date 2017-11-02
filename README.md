@@ -1,4 +1,4 @@
-#Human motion synthesis using Unity3D
+# Human motion synthesis using Unity3D
 
 ## Prerequisite:
 Software: amc2bvh.exe, Unity 2017<br />
@@ -6,7 +6,7 @@ Files: <br />
   Motion files: amc, asf or bvh formats. <br />
   Character models: fbx format. <br />
 
-##Procedure
+## Procedure
 0. If motion files in amc/asf format, run amc2bvh.exe to convert them to bvh
 1. Place all bvh files into "Desktop/New folder/bvh"
 2. Open Blender and run the bvh2fbx.py script. It will convert the motion files to fbx format which Unity can process and place them under the unity "Resources/Input"<sup>[1]</sup>
@@ -19,12 +19,12 @@ Files: <br />
 5. Start up the "intro" scene and run it from Unity Editor
 6. Adjust the desired resolution and framerate and click start. The videos will be recorded to "Documents/RockVR/Video"<sup>[3]</sup>
 
-###Note
+### Note
 * [1] Converting too many bvh files at a time may result in Blender crahsing. Try converting them in batches of smaller quantity (~50).
 * [2] To add a GameObject to a Scene in Unity, drag it from the Asset menu to a position in the Hierarchy menu or a position in the scene itself.
 * [3] Unity will most likely freeze or crash if left running for too long. Try running on batches of small quantity of motions if that's the case.
 
-###Scene Creation procedure
+### Scene Creation procedure
 0. To get a scene, either download a pre-built one or build one yourself using various 3d models for GameObjects.
 1. Create an empty GameObject named "characters" and place it at a location best suited for recording. Add a character to it to see if any adjusting or scaling is needed.
 2. Add DedicatedCapture GameObjects from the "RockVR/Video/Prefabs" folder to the scene in desired locations.
@@ -32,7 +32,7 @@ Files: <br />
 4. Create an empty GameObject named "VideoCaptureCtrl" and attach the VideoCaptureCtrl script in "RockVR/Video/Scripts" to it. Also attach the Automation.cs and SwitchScene.cs scripts from "Scripts" to it as well.
 5. If there is no "Directional light" GameObject, create one.
 
-###Additional characters
+### Additional characters
 In the "characters" folder in Assets, there is a list of preprocessed characters I got from the Unity asset store for free. <br />
 To process new characters: <br />
 1. Change its Animation type to Humanoid under Rig
