@@ -1,0 +1,63 @@
+Varol Paper
+
+Body Model
+-SMPL body model + Blender
+-http://smpl.is.tue.mpg.de/
+
+Body Shape
+-CAESAR dataset
+-Expensive ($10000)
+
+Body Pose
+-CMU MoCap database
+-http://mocap.cs.cmu.edu/search.php?subjectnumber=%&motion=%
+-Instead of retargeting, use MoSh to fit SMPL parameters
+
+Human Texture
+-Extract SMPL texture maps from CAESAR scans
+-Extract textures obtained from 3D scans of subjects with normal clothing
+-Replace faces for anonymity
+
+Light
+-Spherical Harmonics shader in Open Shading Language
+-https://github.com/imageworks/OpenShadingLanguage
+-9 coefficients between -0.7 to 0.7
+
+Camera
+-Resolution 320X240, focal length 60mm, sensor size 32mm
+-Center of viewport points to pelvis
+-Random distance (mean 8, deviation 1), random yaw angle
+
+Background
+-Static background image
+-LSUN dataset
+-https://github.com/fyu/lsun
+
+
+==============================================================================================
+Procedural Generation of Videos to Train Deep Action Recognition Networks Paper
+
+Action Scene Composition
+-MOCAP dataset or programmatic actions defined using procedural animation techniques
+-Environment from pre-made 3D models obtained from Unity Asset Store (Many are free)
+
+Camera
+-Kite Camera attached to character
+-Can follow with/without delay or be stationary
+
+Actions
+-CMU MOCAP database
+-Form "atomic" motions from data to procedually generate realistic action categories
+ (atomic motions as individual movements of a limb in a larger animation sequence.
+ For example, atomic motions in a ”walk” animation include movements such as rising a
+left leg, rising a right leg, and pendular arm movements.)
+
+Ragdoll Physicss
+-15 movable body parts
+-Use RootMotion’s Puppet-Master2 for implementing and controlling human ragdolls in Unity®Pro.
+
+Video generation
+-Lengths between 1-10s @30fps w/ 340X256px
+-Use anti-aliasing, motion blur, and standard photo-realistic cinematic effects.
+
+

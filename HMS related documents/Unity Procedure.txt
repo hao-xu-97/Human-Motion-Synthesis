@@ -1,0 +1,30 @@
+Generating Human Motion in Unity
+Input: character model(fbx format) and mocap data(bvh format)
+
+Steps:
+0. Convert mocap data to bvh from asf and amc files (if didnt do so alredy)
+1. Convert mocap data from bvh format to fbx format using Blender
+	(Unity doesn't support the bvh format)
+2. Add both the mocap data and the character model as assets in unity
+3. Set animation type of both assets to humanoid 
+4. Add character model onto the scene as a GameObject
+5. Create a Animator Controller and attach the mocap data to it
+6. Attach the Animator Controller to the character model
+7. Adjust camera and lighting to desired setting
+8. Run
+
+Variations:
+Illumination- Built-in directional lights in unity (can change color, position, and angle)
+Camera views- Built-in camera in unity (can change position and angle)
+Characters- Create new character models or find available models online
+Clothing- Attached to character, hard to change individual clothing
+Scene- Build scenes with assets from unity
+
+
+Technical uncertainties
+1. Hard to efficiently convert bvh to fbx (currently using Blender)
+2. Capturing the game as videos
+	(https://www.assetstore.unity3d.com/en/#!/content/75653)
+	(This might work)
+3. Automating the whole process (Unity scripts in C#)
+	(Might be more difficult than MotionBuilder)	

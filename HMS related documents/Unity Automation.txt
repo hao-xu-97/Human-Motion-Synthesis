@@ -1,0 +1,17 @@
+Convert BVH to FBX using script
+https://alastaira.wordpress.com/2014/04/25/batch-conversion-of-bvh-to-fbx-motion-capture-files/
+
+Hard to import assets at run time
+-need script to copy files to unity asset folder
+
+Get Animation from fbx file
+ModelImporter modelImporter = (ModelImporter)AssetImporter.GetAtPath(assetPath);
+ModelImporterClipAnimation clip = modelImporter.clipAnimations[0]; // get first clip
+Debug.Log(clip.startFrame);
+Debug.Log(clip.stopFrame);
+
+
+
+Different scenes
+https://www.assetstore.unity3d.com/en/#!/search/page=1/sortby=popularity/query=category:21&price:0
+

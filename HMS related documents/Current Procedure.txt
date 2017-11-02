@@ -1,0 +1,22 @@
+Generating Human Motion in MotionBuilder
+Input: character models(fbx), mocap data(bvh), and background images(jpg)
+
+Steps:
+0. Convert mocap data to bvh from asf and amc files (if didnt do so alredy)
+1. Open MotionBuilder and the python editor for it
+2. Run the retargeter.py script
+3. Input the folders containing the input datas when prompted
+4. Wait for the videos to be rendered
+
+Variations
+Illumination- Currently non-existant 
+(Previous student attempted to add them to the script, could try to improve on that)
+Camera Views- Already in the script
+Characters- Already in the script
+Clothing- Attached to character, cant change them easily
+Scene- different background images
+
+Technical uncertainties
+1. Creating realistic scenery instead of just background images
+2. Incorporating different lighting
+3. Current procedure is dependent on MotionBuilder interface, cant make it standalone executable
