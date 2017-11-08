@@ -1,7 +1,7 @@
 # Human motion synthesis using Unity3D
 
 ## Prerequisite:
-Software: amc2bvh.exe, Unity 2017<br />
+Software: amc2bvh.exe, Unity 2017, Blender. <br />
 Files: <br />
   Motion files: amc, asf or bvh formats. <br />
   Character models: fbx format. <br />

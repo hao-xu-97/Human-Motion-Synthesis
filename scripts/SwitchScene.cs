@@ -1,4 +1,13 @@
-﻿using System.Collections;
+﻿//FILE:     SwitchScene.cs
+//AUTHOR:   Hao Xu (haoxunico@gmail.com)
+//DATE:     11/1/2017
+//PURPOSE: Switch the scenes when done recording in one scene 
+//INFO: Adjust the order of scenes in this script, look in the build settings for the scene number.
+//  The ending scene should start with the line UnityEditor.EditorApplication.isPlaying = false;
+//      to terminate the program, otherwise it will never terminate!
+
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,7 +26,7 @@ public class SwitchScene : MonoBehaviour {
         {
             if (SceneManager.GetActiveScene().name.Equals("town"))
             {
-                //UnityEditor.EditorApplication.isPlaying = false;
+                UnityEditor.EditorApplication.isPlaying = false;
                 SceneManager.LoadScene(2, LoadSceneMode.Single);
                 Object.Destroy(GameObject.Find("VideoCaptureCtrl"));
                 finished = false;

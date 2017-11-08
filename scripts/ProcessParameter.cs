@@ -1,4 +1,10 @@
-﻿using System;
+﻿//FILE:     Automation.cs
+//AUTHOR:   Hao Xu
+//DATE:     11/1/2017
+//PURPOSE: Set the desired resolution and frame rate for the recorded videos
+//Info: Add to this script for more parameters in the future
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -15,11 +21,13 @@ public class ProcessParameter : MonoBehaviour {
     private string resolution;
     private string framerate;
 
+    //this object will be kept when the scenes switch
     void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
     }
 
+    //record the values in the dropdown menu
     public void onClick()
     {
         resolution = "_" + resoDD.captionText.text;
@@ -34,6 +42,9 @@ public class ProcessParameter : MonoBehaviour {
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    //when a scene is loaded
+    //currently changes the parameters for the camera objects to record at the desired setting
+    //look in the VideoCaptureBase script in RockVR for detailed info
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name != "intro")

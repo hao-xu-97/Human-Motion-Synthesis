@@ -1,8 +1,6 @@
 ﻿//FILE:     Automation.cs
-//AUTHOR:   Hao Xu
+//AUTHOR:   Hao Xu (haoxunico@gmail.com)
 //DATE:     11/1/2017
-//REVISION:
-//REVISION DATE:
 //PURPOSE: Generate videos of characters animated with motion captured data.   
 //INFO: Differences in characters, camera angle, lighting, and scene for each motion
 
@@ -49,15 +47,18 @@ namespace RockVR.Video
         // Use this for initialization
         void Start()
         {
+            //get all clips in Resource folder
             clips = Resources.LoadAll("", typeof(AnimationClip));
             charLoc = clips[0].name.IndexOf('|');
-            //AnimationClip[] clips = Resources.FindObjectsOfTypeAll<AnimationClip>();
+            
+            //get all characters
             GameObject character = GameObject.Find("characters");
             initialPos = character.transform.position;
             initialRot = character.transform.rotation;
             Transform[] allChildren = character.GetComponentsInChildren<Transform>();
             characters = new List<GameObject>();
             int index = 0;
+            //find all direct child of the characters GameObject
             foreach (Transform child in allChildren)
             {
                 if (child.parent == character.transform)
@@ -66,6 +67,7 @@ namespace RockVR.Video
                     index++;
                 }
             }
+            //make all characters invisible
             for (int i = 1; i < characters.Count; i++)
             {
                 characters[i].SetActive(false);
@@ -73,6 +75,8 @@ namespace RockVR.Video
             Init(0);
         }
 
+        //initialize character
+        //get the animation controller of that character
         void Init(int c)
         {
             animator = characters[c].GetComponent<Animator>();
@@ -89,16 +93,24 @@ namespace RockVR.Video
         void Update()
         {
             timeLeft -= Time.deltaTime;
+            //when an animation is done
             if (timeLeft < 0)
             {
+                //wait until the video rendering is done and rename it
                 if (VideoCaptureCtrl.instance.status == VideoCaptureCtrl.StatusType.STARTED)
                 {
                     VideoCaptureCtrl.instance.StopCapture();
-                    while (VideoCaptureCtrl.instance.status == VideoCaptureCtrl.StatusType.STOPPED)
+                    while (VideoCaptureCtrl.instance.status != VideoCaptureCtrl.StatusType.FINISH)
                     {
 
                     }
+                    //wait one second for the video and audio files to merge
+                    //this number is arbitrary, fell free to experiment with the value here
+                    System.Threading.Thread.Sleep(1000);
+                    rename();
+                    clipCounter++;
                 }
+                //go to next animation if it exist
                 if (clipCounter < clips.Length)
                 {
                     SwitchAnimation();
@@ -106,27 +118,32 @@ namespace RockVR.Video
                 else
                 {
                     cameraCounter++;
+                    //go to next camera if it exist
                     if (cameraCounter < cameras)
                     {
                         clipCounter = 0;
+                        //find the camera with the name DedicatedCapture numbered camera counter
                         GetComponentInParent<VideoCaptureCtrl>().videoCaptures[0] = GameObject.Find("DedicatedCapture (" + cameraCounter + ")").GetComponent<VideoCapture>();
                         SwitchAnimation();
                     }
                     else
                     {
                         lightCounter++;
+                        //go to next light if it exist
                         if (lightCounter < lights.Length)
                         {
                             clipCounter = 0;
                             cameraCounter = 0;
                             GetComponentInParent<VideoCaptureCtrl>().videoCaptures[0] = GameObject.Find("DedicatedCapture").GetComponent<VideoCapture>();                           
                             Transform myTransform = GameObject.Find("Directional light").transform;
+                            //add the difference in light values to the y rotational coordinate of the directional light
                             Vector3 rot = myTransform.rotation.eulerAngles;
                             rot = new Vector3(rot.x, rot.y+lights[lightCounter]-lights[lightCounter-1], rot.z);
                             myTransform.rotation = Quaternion.Euler(rot);
                         }
                         else{
                             characterCounter++;
+                            //go to next character if it exist
                             if (characterCounter < characters.Count)
                             {
                                 clipCounter = 0;
@@ -143,7 +160,7 @@ namespace RockVR.Video
                             }
                             else
                             {
-                                rename();
+                                //switch to the next scene if all combination is done for this scene
                                 SwitchScene s = GetComponent<SwitchScene>();
                                 s.finished = true;
                             }
@@ -153,13 +170,21 @@ namespace RockVR.Video
             }
         }
 
+
+        //Replace an animation clip in the animator controller with the next clip in the array
+        //Most of this code is copied from unity forums
+        //devs say there might be updates in this section so look out for it
         void SwitchAnimation()
         {
             //----------------
             //Debug.Log(clips.Length);
             //Debug.Log(clips[clipCounter].name);
+            
+            //reset character position after each clip
             characters[characterCounter].transform.position = initialPos;
             characters[characterCounter].transform.rotation = initialRot;
+
+
             timeLeft = ((AnimationClip)clips[clipCounter]).length/5;
             AnimatorOverrideController myCurrentOverrideController = animator.runtimeAnimatorController as AnimatorOverrideController;
 
@@ -177,57 +202,30 @@ namespace RockVR.Video
             animator.runtimeAnimatorController = myNewOverrideController;
 
             UnityEngine.Object.Destroy(myCurrentOverrideController);
-            clipCounter++;
 
             VideoCaptureCtrl.instance.StartCapture();
         }
 
+
+        //method that finds an unnamed file (start with a number) and name it according to the it's description
+        //currently get all files in folder and find one that start with a number to rename it
+        //could use some optimization
         void rename()
         {
             string path = "C:/Users/ISL-WORKSTATION/Documents/RockVR/Video/";
             var files = Directory.GetFiles(path).OrderBy(f => f);
-            ArrayList arr = getString();
             int i = 0;
-            bool deleted = !SceneManager.GetActiveScene().name.Equals("town");
             foreach(var file in files){
                 string fileName = Path.GetFileName(file);
-                if(Char.IsNumber(fileName[0])){
-                    if (i == 0 && !deleted)
-                    {
-                        File.Delete(file);
-                        deleted = true;
-                    }
-                    else
-                    {
-                        Debug.Log(arr[i]);
-                        File.Move(file, path + arr[i]);
-                        i++;
-                        if (i == arr.Count)
-                        {
-                            break;
-                        }
-                    }
+                if (Char.IsNumber(fileName[0])){
+                    string s = "_" + clips[clipCounter].name.Substring(charLoc + 1) + "_" + characters[characterCounter].name + "_" + SceneManager.GetActiveScene().name + "_camera" + cameraCounter + "_light" + lightCounter + ".mp4";
+                    Debug.Log(s);
+                    Debug.Log(file);
+                    File.Move(file, path + s);
                 }
             }
         }
 
-        public ArrayList getString()
-        {
-            ArrayList arr = new ArrayList();
-            for (int i = 0; i < characters.Count; i++)
-            {
-                for (int j = 0; j < lights.Length; j++)
-                {
-                    for (int k = 0; k < cameras; k++)
-                    {
-                        for (int l = 0; l < clips.Length; l++)
-                        {
-                            arr.Add("_" + clips[l].name.Substring(charLoc+1) + "_" + characters[i].name + "_" + SceneManager.GetActiveScene().name +"_camera" + k + "_light" + j + ".mp4");
-                        }
-                    }
-                }
-            }
-            return arr;
-        }
+
     }
 }
