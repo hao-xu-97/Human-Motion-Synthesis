@@ -42,3 +42,4 @@ To process new characters: <br />
 ## Instructions on error handling
 * If you tried to terminate the program insider the Unity Editor, the ffmpeg.exe will still be running and result in unfinished video and audio files to remain in the videos folder. To solve this issue, simply terminate the ffmpeg.exe from task manager and delete the unfinished files.
 * Since the program crashes fairly often, a temporary save state feature is implemented. Once the program crashes, look into the videos folder and figure out what combination the next video should be. Load the scene that the program left off and adjust the parameters in the Automation script attached to the VideoCaptureCtrl GameObject to what the next video should be. Adjust the SwitchScene script to start the program from the scene that it left off.
+* (Be sure to reset the parameters after each run!)
