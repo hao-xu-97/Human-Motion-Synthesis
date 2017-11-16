@@ -14,13 +14,13 @@ Files: <br />
 4. Configure the different variations to record video (characters, camera angle, scene, lighting)
     1. For characters, add<sup>[2]</sup> or remove from the "charcters" GameObject in Unity Editor for the ones desired. For new character added to the scene, add the "New Animation Controller" in Asset to the character's controller in the "Animator" section.
     2. For camera, change the position of the DedicatedCapture GameObjects to the desired location. Add additional DedicatedCapture GameObjects for more angle. Read the documentation for RockVR Video Capture for more detail.
-    3. For scene, configure the list of scenes to use and their order in the SwitchScene.cs script. To add more scenes, create a new scene or find preexisting scenes in the Unity asset store and read the scene creation procedure below.
+    3. For scene, check the desired scenes within the intro scene and run.
     4. For lighting, change the "lights" parameter in Automation.cs script. Add more values to the array for more variations in lighting angles.
-5. Start up the "intro" scene and run it from Unity Editor
+5. Start up the "intro" scene and run it from Unity Editor. Click "Start" button to start the problem.
 6. Adjust the desired resolution and framerate and click start. The videos will be recorded to "Documents/RockVR/Video"<sup>[3]</sup>
 
 ### Note
-* [1] Converting too many bvh files at a time may result in Blender crahsing. Try converting them in batches of smaller quantity (~50).
+* [1] Converting too many bvh files at a time may result in Blender crashing. Try converting them in batches of smaller quantity (~50).
 * [2] To add a GameObject to a Scene in Unity, drag it from the Asset menu to a position in the Hierarchy menu or a position in the scene itself.
 * [3] Unity will most likely freeze or crash if left running for too long. Try running on batches of small quantity of motions if that's the case.
 
@@ -29,7 +29,7 @@ Files: <br />
 1. Create an empty GameObject named "characters" and place it at a location best suited for recording. Add a character to it to see if any adjusting or scaling is needed.
 2. Add DedicatedCapture GameObjects from the "RockVR/Video/Prefabs" folder to the scene in desired locations.
 3. Attach the AudioCapture script in "RockVR/Video/Scripts" folder to the main camera.
-4. Create an empty GameObject named "VideoCaptureCtrl" and attach the VideoCaptureCtrl script in "RockVR/Video/Scripts" to it. Also attach the Automation.cs and SwitchScene.cs scripts from "Scripts" to it as well.
+4. Create an empty GameObject named "VideoCaptureCtrl" and attach the VideoCaptureCtrl script in "RockVR/Video/Scripts" to it. Also attach the Automation.cs script from "Scripts" to it as well.
 5. If there is no "Directional light" GameObject, create one.
 
 ### Additional characters
@@ -41,5 +41,5 @@ To process new characters: <br />
 
 ## Instructions on error handling
 * If you tried to terminate the program insider the Unity Editor, the ffmpeg.exe will still be running and result in unfinished video and audio files to remain in the videos folder. To solve this issue, simply terminate the ffmpeg.exe from task manager and delete the unfinished files.
-* Since the program crashes fairly often, a temporary save state feature is implemented. Once the program crashes, look into the videos folder and figure out what combination the next video should be. Load the scene that the program left off and adjust the parameters in the Automation script attached to the VideoCaptureCtrl GameObject to what the next video should be. Adjust the SwitchScene script to start the program from the scene that it left off.
+* Since the program crashes fairly often, a temporary save state feature is implemented. Once the program crashes, look into the videos folder and figure out what combination the next video should be. Load the scene that the program left off and adjust the parameters in the Automation script attached to the VideoCaptureCtrl GameObject to what the next video should be. Adjust the scenes in the intro scene before running.
 * (Be sure to reset the parameters after each run!)

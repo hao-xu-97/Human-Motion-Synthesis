@@ -27,10 +27,10 @@ namespace RockVR.Video
         private UnityEngine.Object[] clips;
         private List<GameObject> characters;
         public int cameras = 3;
-        private int clipCounter = 0;
-        private int cameraCounter = 0;
-        private int characterCounter = 0;
-        private int lightCounter = 0;
+		public int clipCounter = 0;
+        public int cameraCounter = 0;
+        public int characterCounter = 0;
+        public int lightCounter = 0;
 
         private Animator animator;
 
@@ -68,11 +68,25 @@ namespace RockVR.Video
                 }
             }
             //make all characters invisible
-            for (int i = 1; i < characters.Count; i++)
+            for (int i = 0; i < characters.Count; i++)
             {
                 characters[i].SetActive(false);
             }
-            Init(0);
+            if (cameraCounter > 0)
+            {
+                GetComponentInParent<VideoCaptureCtrl>().videoCaptures[0] = GameObject.Find("DedicatedCapture (" + cameraCounter + ")").GetComponent<VideoCapture>();
+
+            }
+            if (lightCounter > 0)
+            {
+                Transform myTransform = GameObject.Find("Directional light").transform;
+                //add the difference in light values to the y rotational coordinate of the directional light
+                Vector3 rot = myTransform.rotation.eulerAngles;
+                rot = new Vector3(rot.x, rot.y + lights[lightCounter] - lights[0], rot.z);
+                myTransform.rotation = Quaternion.Euler(rot);
+            }
+            characters[characterCounter].SetActive(true);
+            Init(characterCounter);
         }
 
         //initialize character
@@ -161,8 +175,9 @@ namespace RockVR.Video
                             else
                             {
                                 //switch to the next scene if all combination is done for this scene
-                                SwitchScene s = GetComponent<SwitchScene>();
-                                s.finished = true;
+                                GameObject handler = GameObject.Find("handler");
+                                ProcessParameter pp = handler.GetComponent<ProcessParameter>();
+                                pp.finished = true;
                             }
                         }
                     }

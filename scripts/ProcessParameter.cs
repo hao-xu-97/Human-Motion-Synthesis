@@ -2,6 +2,7 @@
 //AUTHOR:   Hao Xu
 //DATE:     11/1/2017
 //PURPOSE: Set the desired resolution and frame rate for the recorded videos
+//      Also sets the desired scenes to run
 //Info: Add to this script for more parameters in the future
 
 using System;
@@ -17,7 +18,16 @@ public class ProcessParameter : MonoBehaviour {
 
     public Dropdown resoDD;
     public Dropdown frameDD;
+    public Toggle town;
+    public Toggle terrain;
+    public Toggle castle;
+    public Toggle scifi;
+    public Toggle island;
 
+    public bool finished = false;
+
+    private bool[] scenes;
+    private int sceneCounter = -1;
     private string resolution;
     private string framerate;
 
@@ -25,14 +35,20 @@ public class ProcessParameter : MonoBehaviour {
     void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
+        scenes = new bool[5];
     }
 
-    //record the values in the dropdown menu
+    //record the values in the dropdown menu and record which scenes to load
     public void onClick()
     {
         resolution = "_" + resoDD.captionText.text;
         framerate = "_" + frameDD.captionText.text;
-        SceneManager.LoadScene(1, LoadSceneMode.Single);
+        scenes[0] = town.isOn;
+        scenes[1] = terrain.isOn;
+        scenes[2] = castle.isOn;
+        scenes[3] = scifi.isOn;
+        scenes[4] = island.isOn;
+        SceneManager.LoadScene(findNext(), LoadSceneMode.Single);
 
     }
 
@@ -71,6 +87,37 @@ public class ProcessParameter : MonoBehaviour {
             vcb2._targetFramerate = (RockVR.Video.VideoCaptureBase.TargetFramerateType)Enum.Parse(
                 typeof(RockVR.Video.VideoCaptureBase.TargetFramerateType), framerate);
         }
+    }
+
+    //check if a scene is done and load the next scene
+    void Update()
+    {
+        if (finished)
+        {
+            SceneManager.LoadScene(findNext(), LoadSceneMode.Single);
+            GameObject.Destroy(GameObject.Find("VideoCaptureCtrl"));
+            finished = false;
+        }
+    }
+
+    //find the next scene to load
+    int findNext()
+    {
+        int index = 5;
+        for (int i = sceneCounter+1; i < 5; i++)
+        {
+            if (scenes[i])
+            {
+                index = i;
+                sceneCounter = i;
+                break;
+            }
+        }
+        if (index == 5)
+        {
+            UnityEditor.EditorApplication.isPlaying = false;
+        }
+        return index+1;
     }
 
     void OnDisable()
