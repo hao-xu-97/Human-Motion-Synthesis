@@ -2,27 +2,30 @@
 
 ## Prerequisite:
 Software: amc2bvh.exe, Unity 2017, Blender. <br />
+Unity: RockVR (Video Capture), scenes, character models
 Files: <br />
   Motion files: amc, asf or bvh formats. <br />
   Character models: fbx format. <br />
 
 ## Procedure
 0. If motion files in amc/asf format, run amc2bvh.exe to convert them to bvh
-1. Place all bvh files into "Desktop/New folder/bvh"
+1. Place all bvh files into "Desktop/New folder/bvh" (or modify script)
 2. Open Blender and run the bvh2fbx.py script. It will convert the motion files to fbx format which Unity can process and place them under the unity "Resources/Input"<sup>[1]</sup>
 3. Find the imported motion file in Unity and change its Animation Type to Humanoid under Rig. Check to make sure the model is mapped properly.
 4. Configure the different variations to record video (characters, camera angle, scene, lighting)
-    1. For characters, add<sup>[2]</sup> or remove from the "charcters" GameObject in Unity Editor for the ones desired. For new character added to the scene, add the "New Animation Controller" in Asset to the character's controller in the "Animator" section.
+    1. For characters, add<sup>[2]</sup> or remove from the "characters" GameObject in Unity Editor for the ones desired. For new character added to the scene, add the "New Animation Controller"<sup>[3]</sup> in Asset to the character's controller in the "Animator" section.
     2. For camera, change the position of the DedicatedCapture GameObjects to the desired location. Add additional DedicatedCapture GameObjects for more angle. Read the documentation for RockVR Video Capture for more detail.
     3. For scene, check the desired scenes within the intro scene and run.
     4. For lighting, change the "lights" parameter in Automation.cs script. Add more values to the array for more variations in lighting angles.
 5. Start up the "intro" scene and run it from Unity Editor. Click "Start" button to start the problem.
-6. Adjust the desired resolution and framerate and click start. The videos will be recorded to "Documents/RockVR/Video"<sup>[3]</sup>
+6. Adjust the desired resolution and framerate and click start. For initial run, leave all the counters to 0. For continuing runs enter the counters where the previous run left off. The videos will be recorded to "Documents/RockVR/Video"<sup>[4]</sup>
 
 ### Note
 * [1] Converting too many bvh files at a time may result in Blender crashing. Try converting them in batches of smaller quantity (~50).
-* [2] To add a GameObject to a Scene in Unity, drag it from the Asset menu to a position in the Hierarchy menu or a position in the scene itself.
-* [3] Unity will most likely freeze or crash if left running for too long. Try running on batches of small quantity of motions if that's the case.
+* [2] To add a GameObject to a Scene in Unity, drag it from the Asset menu to a position in the Hierarchy menu or a position in the scene itself. You can also create an empty GameObject from the "GameObject->Create Empty" option.
+* [3] Depending on the framerate of the motion files, you may need to adjust the speed of the animation. To do this go to "Assets" and find the "New Animator Controller" and open it. Then click on "New State" and adjust the speed to framerate/24 (if 120 frames changes to 5, if 60 change to 2.5, etc).
+Also find the line "timeLeft = ((AnimationClip)clips[clipCounter]).length;" in the SwitchAnimation function and divide it by the speed.
+* [4] Unity will most likely freeze or crash if left running for too long. Adjust the counters in the "intro" scene to resume progress.
 
 ### Scene Creation procedure
 0. To get a scene, either download a pre-built one or build one yourself using various 3d models for GameObjects.
@@ -41,5 +44,4 @@ To process new characters: <br />
 
 ## Instructions on error handling
 * If you tried to terminate the program insider the Unity Editor, the ffmpeg.exe will still be running and result in unfinished video and audio files to remain in the videos folder. To solve this issue, simply terminate the ffmpeg.exe from task manager and delete the unfinished files.
-* Since the program crashes fairly often, a temporary save state feature is implemented. Once the program crashes, look into the videos folder and figure out what combination the next video should be. Load the scene that the program left off and adjust the parameters in the Automation script attached to the VideoCaptureCtrl GameObject to what the next video should be. Adjust the scenes in the intro scene before running.
-* (Be sure to reset the parameters after each run!)
+* Since the program freezes fairly often, a temporary save state feature is implemented. Once the program froze, terminate it from task manager. Look into the videos folder and figure out what combination the next video should be. Enter the parameters where the last run left off in the "intro" scene (various counters) to pick up from there.

@@ -23,6 +23,10 @@ public class ProcessParameter : MonoBehaviour {
     public Toggle castle;
     public Toggle scifi;
     public Toggle island;
+    public InputField clipF;
+    public InputField camF;
+    public InputField charF;
+    public InputField lightF;
 
     public bool finished = false;
 
@@ -31,6 +35,12 @@ public class ProcessParameter : MonoBehaviour {
     private string resolution;
     private string framerate;
 
+    private int clipC;
+    private int camC;
+    private int charC;
+    private int lightC;
+
+    private bool initial = true;
     //this object will be kept when the scenes switch
     void Awake()
     {
@@ -48,6 +58,11 @@ public class ProcessParameter : MonoBehaviour {
         scenes[2] = castle.isOn;
         scenes[3] = scifi.isOn;
         scenes[4] = island.isOn;
+        clipC = Int32.Parse(clipF.text);
+        camC = Int32.Parse(camF.text);
+        charC = Int32.Parse(charF.text);
+        lightC = Int32.Parse(lightF.text);
+
         SceneManager.LoadScene(findNext(), LoadSceneMode.Single);
 
     }
@@ -65,6 +80,15 @@ public class ProcessParameter : MonoBehaviour {
     {
         if (scene.name != "intro")
         {
+            if (initial)
+            {
+                RockVR.Video.Automation au = GameObject.Find("VideoCaptureCtrl").GetComponent<RockVR.Video.Automation>();
+                au.clipCounter = clipC;
+                au.cameraCounter = camC;
+                au.characterCounter = charC;
+                au.lightCounter = lightC;
+                initial = false;
+            }
             Debug.Log(scene.name);
             Debug.Log(resolution);
             Debug.Log(framerate);
@@ -116,6 +140,7 @@ public class ProcessParameter : MonoBehaviour {
         if (index == 5)
         {
             UnityEditor.EditorApplication.isPlaying = false;
+            Application.Quit();
         }
         return index+1;
     }

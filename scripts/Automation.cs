@@ -21,7 +21,7 @@ namespace RockVR.Video
          *add more values to array for different light angles
          *(y component of rotation for directional light)
          */
-        private int[] lights = { 0 };
+        private int[] lights = { 0 , 180 };
 
         private float timeLeft;
         private UnityEngine.Object[] clips;
@@ -49,7 +49,7 @@ namespace RockVR.Video
         {
             //get all clips in Resource folder
             clips = Resources.LoadAll("", typeof(AnimationClip));
-            charLoc = clips[0].name.IndexOf('|');
+            charLoc = clips[clipCounter].name.IndexOf('|');
             
             //get all characters
             GameObject character = GameObject.Find("characters");
@@ -119,7 +119,7 @@ namespace RockVR.Video
 
                     }
                     //wait one second for the video and audio files to merge
-                    //this number is arbitrary, fell free to experiment with the value here
+                    //this number is arbitrary, feel free to experiment with the value here
                     System.Threading.Thread.Sleep(1000);
                     rename();
                     clipCounter++;
@@ -229,10 +229,10 @@ namespace RockVR.Video
         {
             string path = "C:/Users/ISL-WORKSTATION/Documents/RockVR/Video/";
             var files = Directory.GetFiles(path).OrderBy(f => f);
-            int i = 0;
             foreach(var file in files){
                 string fileName = Path.GetFileName(file);
                 if (Char.IsNumber(fileName[0])){
+                    charLoc = clips[clipCounter].name.IndexOf('|');
                     string s = "_" + clips[clipCounter].name.Substring(charLoc + 1) + "_" + characters[characterCounter].name + "_" + SceneManager.GetActiveScene().name + "_camera" + cameraCounter + "_light" + lightCounter + ".mp4";
                     Debug.Log(s);
                     Debug.Log(file);
