@@ -33,7 +33,10 @@ Also find the line "timeLeft = ((AnimationClip)clips[clipCounter]).length;" in t
 2. Add DedicatedCapture GameObjects from the "RockVR/Video/Prefabs" folder to the scene in desired locations.
 3. Attach the AudioCapture script in "RockVR/Video/Scripts" folder to the main camera.
 4. Create an empty GameObject named "VideoCaptureCtrl" and attach the VideoCaptureCtrl script in "RockVR/Video/Scripts" to it. Also attach the Automation.cs script from "Scripts" to it as well.
-5. If there is no "Directional light" GameObject, create one.
+5. Add the first DedicatedCapture GameObject as well as the AudioCapture to the the VideoCaptureCtrl script.
+6. If there is no "Directional light" GameObject, create one.
+7. Add the created scene to build settings.
+8. Add a check box in the intro scene for the newly created scene and modify the scene "ProcessParameter" accordingly.
 
 ### Additional characters
 In the "characters" folder in Assets, there is a list of preprocessed characters I got from the Unity asset store for free. <br />
@@ -44,4 +47,11 @@ To process new characters: <br />
 
 ## Instructions on error handling
 * If you tried to terminate the program insider the Unity Editor, the ffmpeg.exe will still be running and result in unfinished video and audio files to remain in the videos folder. To solve this issue, simply terminate the ffmpeg.exe from task manager and delete the unfinished files.
-* Since the program freezes fairly often, a temporary save state feature is implemented. Once the program froze, terminate it from task manager. Look into the videos folder and figure out what combination the next video should be. Enter the parameters where the last run left off in the "intro" scene (various counters) to pick up from there.
+* Since the program freezes fairly often, a temporary save state feature is implemented. Once Unity froze, terminate it from task manager. Look into the videos folder and figure out what combination the next video should be. Enter the parameters where the last run left off in the "intro" scene (various counters) to pick up from there.
+
+## Local environment specs
+* OS: Microsoft Windows 10 Pro
+* Version: 10.0.16299 Build 16299
+* Processor:	Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz, 2201 Mhz, 10 Core(s), 20 Logical Processor(s)
+* Total Physical Memory:	63.9 GB
+* GPU:	NVIDIA Quadro M5000
